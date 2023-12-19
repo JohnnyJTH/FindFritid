@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+  output   = "../src/lib/types/db"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Activities {
+  /// The ID of the activity
+  /// @default {Autoincremented}
+  id    Int     @id @default(autoincrement())
+  /// The name of the activity
+  /// @zod.string.max(255, {message: "Aktivitetens navn må ikke være længere end 255 tegn"})
+  name  String
+  /// The logo URL of the activity
+  logo  String
+  /// The cover image URL of the activity
+  cover String
+  /// The union of the activity
+  union String?
+  /// The clubs that are related to the activity
+  clubs Clubs[]
+
+  /// The description of the activity
+  /// @zod.string.array(.min(5, {message: "Der skal være mindst 5 nøgleord"}).max(10, {message: "Der må ikke være flere end 10 nøgleord"}))
+  keywords    String[]
+  sport       Boolean
+  movement    Boolean
+  environment Environment
+  gender      Gender
+}
+
+enum Environment {
+  Both
+  Indoor
+  Outdoor
+}
+
+enum Gender {
+  Neutral
+  Male
+  Female
+}
+
+model Clubs {
+  /// The ID of the club
+  /// @default {Autoincremented}
+  id          Int         @id @default(autoincrement())
+  /// The name of the club
+  name        String
+  /// The description of the club
+  description String
+  /// The logo URL of the club
+  logo        String
+  /// The activity that the club is related to
+  activityId  Int
+  activity    Activities  @relation(fields: [activityId], references: [id])
+  /// The locations of the club
+  /// @zod.object.array(.min(1, {message: "Der skal være mindst 1 lokation"}))
+  locations   Locations[]
+}
+
+model Locations {
+  /// The ID of the location
+  id      Int    @id @default(autoincrement())
+  /// The name of the location
+  name    String
+  /// The club that the location is related to
+  clubId  Int
+  club    Clubs  @relation(fields: [clubId], references: [id])
+  /// The address of the location
+  address String
+}
+
+model Users {
+  id    Int    @id @default(autoincrement())
+  name  String
+  union String
+}
