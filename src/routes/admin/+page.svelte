@@ -1,31 +1,33 @@
 <script lang="ts">
     import type { Users } from "$lib/types/db";
+    import * as Form from "$lib/components/ui/form";
+    import { loginSchema } from "./types";
+    import type { PageData } from "./$types";
 
-    let username = "";
-    let password = "";
+    export let data: PageData;
 
     let user: Users | null = null;
-
-    const login = async () => {
-        const res = await fetch("/api/users/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password }),
-        });
-
-        if (res.ok) {
-            user = await res.json();
-        } else {
-            alert("Forkert brugernavn eller kodeord");
-        }
-    };
 </script>
 
-<input bind:value={username} type="text" name="Brugernavn" />
-<input bind:value={password} type="password" name="Kodeord" />
-<button on:click={login}>Login</button>
+<Form.Root method="POST" action="?/login" form={data.form} schema={loginSchema} let:config>
+    <Form.Field {config} name="username">
+        <Form.Item>
+            <Form.Label>Brugernavn</Form.Label>
+            <Form.Input />
+            <Form.Description>Dit tildelte brugernavn</Form.Description>
+            <Form.Validation />
+        </Form.Item>
+    </Form.Field>
+    <Form.Field {config} name="password">
+        <Form.Item>
+            <Form.Label>Nøgleord</Form.Label>
+            <Form.Input type="password" />
+            <Form.Description>Dit tildelte brugernavn</Form.Description>
+            <Form.Validation />
+        </Form.Item>
+    </Form.Field>
+    <Form.Button>Log ind</Form.Button>
+</Form.Root>
 
 {#if user}
     <h1>Velkommen {user.name}</h1>
