@@ -80,9 +80,10 @@ model Locations {
 }
 
 model Users {
-  id       Int    @id @default(autoincrement())
-  name     String
-  username String
-  password String
-  union    String
+  id         Int    @id @default(autoincrement())
+  name       String
+  username   String
+  password   String
+  union      String
+  activities Int[]
 }

@@ -9,6 +9,6 @@
 <Toaster />
 <SiteHeader />
 
-<div class="container mx-auto prose dark:prose-invert">
+<div class="prose dark:prose-invert">
   <slot />
 </div>

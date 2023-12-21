@@ -18,5 +18,13 @@ export const POST: RequestHandler = async ({ request, locals: { db } }) => {
     if (!user) {
         return new Response("Invalid credentials", { status: 401 });
     }
-    return json(user)
+    const activities = await db.activities.findMany({
+        where: {
+            id: { in: user.activities }
+        }
+    })
+    return json({
+        user,
+        activities
+    })
 };
