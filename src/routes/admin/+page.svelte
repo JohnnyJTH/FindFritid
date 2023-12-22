@@ -5,7 +5,7 @@
     import { Label } from "$lib/components/ui/label";
     import type { Activities, Users } from "$lib/types/db";
 
-    let data: { user: Users; activities: Activities[] } | null = null;
+    let userData: { user: Users; activities: Activities[] } | null = null;
 
     let username = "";
     let password = "";
@@ -21,18 +21,22 @@
             }),
         });
         if (res.ok) {
-            data = await res.json();
+            userData = await res.json();
         } else {
             addToast({ data: { title: "Fejl", description: "Forkert brugernavn eller kodeord", color: "bg-red-500" } });
         }
     };
+
+    let activityData: Activities | null = null;
 </script>
 
 <div class="page-container">
-    {#if data}
-        <h1>Velkommen {data.user.name}</h1>
+    {#if activityData}
+        ...
+    {:else if userData}
+        <h1>Velkommen {userData.user.name}</h1>
         <p>Vælg venligst en aktivitet at administrere.</p>
-        {#each data.activities as activity}
+        {#each userData.activities as activity}
             <div>{activity.name}</div>
         {/each}
     {:else}
