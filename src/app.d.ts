@@ -1,3 +1,4 @@
+import type { Activities } from "$lib/types/db";
 import type { PrismaClient } from "@prisma/client";
 
 declare global {
@@ -5,6 +6,9 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			db: PrismaClient;
+		}
+		interface PageState {
+			activity: Activities | null;
 		}
 		// interface PageData {}
 		// interface Platform {}
