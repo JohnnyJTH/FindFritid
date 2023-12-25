@@ -36,6 +36,7 @@
   "type": "module",
   "dependencies": {
     "@prisma/client": "latest",
+    "@prisma/extension-accelerate": "^0.6.2",
     "bits-ui": "^0.11.8",
     "clsx": "^2.0.0",
     "lucide-svelte": "^0.299.0",
