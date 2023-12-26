@@ -6,7 +6,7 @@
 </script>
 
 <header class="bg-background/60 dark:bg-dark/60 sticky top-0 z-40 w-full border-b dark:border-white/10 shadow-sm backdrop-blur">
-    <div class="container flex h-14 items-center">
+    <div class="page-container flex h-14 items-center">
         <MainNav />
         <MobileNav />
         <div class="flex flex-1 justify-end">

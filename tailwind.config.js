@@ -3,7 +3,8 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 /** @type {import('tailwindcss').Config} */
 const config = {
 	plugins: [
-		require('@tailwindcss/typography')
+		require('@tailwindcss/typography'),
+		require('@tailwindcss/aspect-ratio'),
 	],
 	darkMode: ["class"],
 	content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -56,9 +57,6 @@ const config = {
 				lg: "var(--radius)",
 				md: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)"
-			},
-			fontFamily: {
-				sans: [...fontFamily.sans]
 			}
 		}
 	},
