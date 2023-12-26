@@ -98,7 +98,7 @@
     };
 </script>
 
-<div class="page-container">
+<div class="page-container py-10">
     {#if activityData}
         <div class="flex justify-between items-center">
             <h1 class="mb-0">{activityData.name}</h1>
