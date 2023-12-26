@@ -12,6 +12,7 @@
     import Tags from "./_components/Tags.svelte";
     import SelectEnum from "./_components/SelectEnum.svelte";
     import { Switch } from "$lib/components/ui/switch";
+    import { Textarea } from "$lib/components/ui/textarea";
 
     onMount(async () => {
         if ($authStore.username != "" && $authStore.password != "") {
@@ -80,7 +81,7 @@
     const submitActivity = async () => {
         const validation = ActivitiesSchema.safeParse(activityData);
         if (!validation.success) {
-            addToast({ data: { title: "Fejl", description: validation.error.issues.map(e => e.message).join("\n"), color: "bg-red-500" } });
+            addToast({ data: { title: "Fejl", description: validation.error.issues.map((e) => e.message).join("\n"), color: "bg-red-500" } });
             return;
         }
         const res = await fetch("/api/activity", {
@@ -106,6 +107,10 @@
         </div>
         <p class="!mt-0">Her kan du ændre {activityData.name} detaljer.</p>
         <div class="space-y-6">
+            <div class="space-y-2">
+                <Label for="description">Beskrivelse</Label>
+                <Textarea bind:value={activityData.description} id="description" />
+            </div>
             <div class="space-y-2">
                 <Label for="keywords">Nøgleord</Label>
                 <Tags bind:activity={activityData} id="keywords" />
