@@ -4,9 +4,10 @@
     import { Plus } from "lucide-svelte";
     import type { PageData } from "./$types";
     import Slider from "./_components/Slider.svelte";
+    import { truncate } from "$lib/utils";
+    import { Activity } from "$lib/components";
 
     export let data: PageData;
-    const truncate = (text: string) => (text.length > 100 ? `${text.slice(0, 100)}...` : text);
 </script>
 
 <div class="page-container not-prose">
@@ -26,25 +27,7 @@
             <h2 class="sr-only">Aktiviteter</h2>
             <div class="grid gap-y-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-y-10 sm:gap-x-6 lg:gap-x-8">
                 {#each data.activities as activity}
-                    <div class="relative flex flex-col bg-card border border-border rounded-md overflow-hidden">
-                        <div class="aspect-w-3 aspect-h-2">
-                            <img class="object-cover object-center sm:w-full sm:h-full" src={activity.cover} alt={activity.name} />
-                        </div>
-                            <div class="flex flex-1 flex-col p-4">
-                            <h3 class="text-foreground text-lg font-semibold">{activity.name}</h3>
-                            <Dialog.Root>
-                                <Dialog.Trigger asChild let:builder>
-                                    <p use:builder.action {...builder} class="cursor-pointer text-muted-foreground text-sm">{truncate(activity.description)}</p>
-                                </Dialog.Trigger>
-                                <Dialog.Content>
-                                    <Dialog.Header>
-                                        <Dialog.Title>{activity.name}</Dialog.Title>
-                                        <Dialog.Description>{activity.description}</Dialog.Description>
-                                    </Dialog.Header>
-                                </Dialog.Content>
-                            </Dialog.Root>
-                        </div>
-                    </div>
+                    <Activity {activity} />
                 {/each}
             </div>
         </section>

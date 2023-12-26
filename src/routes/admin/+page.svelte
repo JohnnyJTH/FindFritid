@@ -13,6 +13,8 @@
     import SelectEnum from "./_components/SelectEnum.svelte";
     import { Switch } from "$lib/components/ui/switch";
     import { Textarea } from "$lib/components/ui/textarea";
+    import { truncate } from "$lib/utils";
+    import { Activity } from "$lib/components";
 
     onMount(async () => {
         if ($authStore.username != "" && $authStore.password != "") {
@@ -97,6 +99,31 @@
             addToast({ data: { title: "Fejl", description: "Aktiviteten blev ikke opdateret", color: "bg-red-500" } });
         }
     };
+
+    let coverFiles: FileList | null = null;
+    let uploading = false;
+    const uploadImage = async (file: File, type: "cover" | "logo") => {
+        if (uploading || !activityData) return;
+
+        uploading = true;
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("name", activityData.name);
+        formData.append("type", type);
+        formData.append("activityId", activityData.id.toString());
+        const res = await fetch("/api/activity/image", {
+            method: "POST",
+            body: formData,
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (type === "logo") activityData.logo = data.url;
+            else activityData.cover = data.url;
+        } else {
+            addToast({ data: { title: "Fejl", description: "Billedet blev ikke uploadet", color: "bg-red-500" } });
+        }
+        uploading = false;
+    };
 </script>
 
 <div class="page-container py-10">
@@ -107,9 +134,31 @@
         </div>
         <p class="!mt-0">Her kan du ændre {activityData.name} detaljer.</p>
         <div class="space-y-6">
+            <div class="space-y-2 not-prose">
+                <Label>Forhåndsvisning</Label>
+                <div class="w-full sm:w-1/2 xl:w-1/4">
+                    <Activity activity={activityData} />
+                </div>
+            </div>
+            <div class="space-y-2">
+                <Label for="cover">Billede</Label>
+                <input bind:files={coverFiles} type="file" accept=".png, .jpg, .jpeg" id="cover" class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
+                <p class="text-sm text-muted-foreground">Billedet vil hovedsageligt blive vist i 3/2 aspect ratio.</p>
+
+                <Button
+                    on:click={() => {
+                        if (coverFiles) uploadImage(coverFiles[0], "cover");
+                    }}
+                    disabled={!coverFiles || uploading}>Upload</Button
+                >
+            </div>
             <div class="space-y-2">
                 <Label for="description">Beskrivelse</Label>
                 <Textarea bind:value={activityData.description} id="description" />
+            </div>
+            <div class="space-y-2">
+                <Label for="union">Union</Label>
+                <Input bind:value={activityData.union} id="union" />
             </div>
             <div class="space-y-2">
                 <Label for="keywords">Nøgleord</Label>

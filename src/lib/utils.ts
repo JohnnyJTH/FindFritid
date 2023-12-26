@@ -5,6 +5,8 @@ import type { TransitionConfig } from "svelte/transition";
 
 export { localStorageStore } from "./localStorageStore";
 
+export const truncate = (text: string) => (text.length > 100 ? `${text.slice(0, 100)}...` : text);
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
