@@ -4,7 +4,6 @@
     import { Plus } from "lucide-svelte";
     import type { PageData } from "./$types";
     import Slider from "./_components/Slider.svelte";
-    import { Title } from "$lib/components/ui/card";
 
     export let data: PageData;
     const truncate = (text: string) => (text.length > 100 ? `${text.slice(0, 100)}...` : text);
@@ -31,7 +30,7 @@
                         <div class="aspect-w-3 aspect-h-2">
                             <img class="object-cover object-center sm:w-full sm:h-full" src={activity.cover} alt={activity.name} />
                         </div>
-                        <div class="flex flex-1 flex-col p-4">
+                            <div class="flex flex-1 flex-col p-4">
                             <h3 class="text-foreground text-lg font-semibold">{activity.name}</h3>
                             <Dialog.Root>
                                 <Dialog.Trigger asChild let:builder>
