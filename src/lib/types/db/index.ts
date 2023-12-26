@@ -12,7 +12,7 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const ActivitiesScalarFieldEnumSchema = z.enum(['id','name','logo','cover','union','keywords','sport','movement','environment','gender']);
+export const ActivitiesScalarFieldEnumSchema = z.enum(['id','name','logo','cover','union','description','keywords','sport','movement','environment','gender']);
 
 export const ClubsScalarFieldEnumSchema = z.enum(['id','name','description','logo','activityId']);
 
@@ -68,6 +68,10 @@ export const ActivitiesSchema = z.object({
   union: z.string().nullable(),
   /**
    * The description of the activity
+   */
+  description: z.string(),
+  /**
+   * The keywords of the activity
    */
   keywords: z.string().array().min(5, {message: "Der skal være mindst 5 nøgleord"}).max(10, {message: "Der må ikke være flere end 10 nøgleord"}),
   sport: z.boolean(),
@@ -177,6 +181,7 @@ export const ActivitiesSelectSchema: z.ZodType<Prisma.ActivitiesSelect> = z.obje
   logo: z.boolean().optional(),
   cover: z.boolean().optional(),
   union: z.boolean().optional(),
+  description: z.boolean().optional(),
   keywords: z.boolean().optional(),
   sport: z.boolean().optional(),
   movement: z.boolean().optional(),
@@ -265,6 +270,7 @@ export const ActivitiesWhereInputSchema: z.ZodType<Prisma.ActivitiesWhereInput> 
   logo: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cover: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   union: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  description: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   keywords: z.lazy(() => StringNullableListFilterSchema).optional(),
   sport: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   movement: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
@@ -279,6 +285,7 @@ export const ActivitiesOrderByWithRelationInputSchema: z.ZodType<Prisma.Activiti
   logo: z.lazy(() => SortOrderSchema).optional(),
   cover: z.lazy(() => SortOrderSchema).optional(),
   union: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   keywords: z.lazy(() => SortOrderSchema).optional(),
   sport: z.lazy(() => SortOrderSchema).optional(),
   movement: z.lazy(() => SortOrderSchema).optional(),
@@ -299,6 +306,7 @@ export const ActivitiesWhereUniqueInputSchema: z.ZodType<Prisma.ActivitiesWhereU
   logo: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   cover: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   union: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  description: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   keywords: z.lazy(() => StringNullableListFilterSchema).optional(),
   sport: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   movement: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
@@ -313,6 +321,7 @@ export const ActivitiesOrderByWithAggregationInputSchema: z.ZodType<Prisma.Activ
   logo: z.lazy(() => SortOrderSchema).optional(),
   cover: z.lazy(() => SortOrderSchema).optional(),
   union: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   keywords: z.lazy(() => SortOrderSchema).optional(),
   sport: z.lazy(() => SortOrderSchema).optional(),
   movement: z.lazy(() => SortOrderSchema).optional(),
@@ -334,6 +343,7 @@ export const ActivitiesScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Ac
   logo: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   cover: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   union: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  description: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   keywords: z.lazy(() => StringNullableListFilterSchema).optional(),
   sport: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
   movement: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
@@ -526,6 +536,7 @@ export const ActivitiesCreateInputSchema: z.ZodType<Prisma.ActivitiesCreateInput
   logo: z.string(),
   cover: z.string(),
   union: z.string().optional().nullable(),
+  description: z.string(),
   keywords: z.union([ z.lazy(() => ActivitiesCreatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.boolean(),
   movement: z.boolean(),
@@ -540,6 +551,7 @@ export const ActivitiesUncheckedCreateInputSchema: z.ZodType<Prisma.ActivitiesUn
   logo: z.string(),
   cover: z.string(),
   union: z.string().optional().nullable(),
+  description: z.string(),
   keywords: z.union([ z.lazy(() => ActivitiesCreatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.boolean(),
   movement: z.boolean(),
@@ -553,6 +565,7 @@ export const ActivitiesUpdateInputSchema: z.ZodType<Prisma.ActivitiesUpdateInput
   logo: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cover: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   union: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   keywords: z.union([ z.lazy(() => ActivitiesUpdatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   movement: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
@@ -567,6 +580,7 @@ export const ActivitiesUncheckedUpdateInputSchema: z.ZodType<Prisma.ActivitiesUn
   logo: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cover: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   union: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   keywords: z.union([ z.lazy(() => ActivitiesUpdatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   movement: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
@@ -581,6 +595,7 @@ export const ActivitiesCreateManyInputSchema: z.ZodType<Prisma.ActivitiesCreateM
   logo: z.string(),
   cover: z.string(),
   union: z.string().optional().nullable(),
+  description: z.string(),
   keywords: z.union([ z.lazy(() => ActivitiesCreatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.boolean(),
   movement: z.boolean(),
@@ -593,6 +608,7 @@ export const ActivitiesUpdateManyMutationInputSchema: z.ZodType<Prisma.Activitie
   logo: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cover: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   union: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   keywords: z.union([ z.lazy(() => ActivitiesUpdatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   movement: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
@@ -606,6 +622,7 @@ export const ActivitiesUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Activiti
   logo: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cover: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   union: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   keywords: z.union([ z.lazy(() => ActivitiesUpdatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   movement: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
@@ -863,6 +880,7 @@ export const ActivitiesCountOrderByAggregateInputSchema: z.ZodType<Prisma.Activi
   logo: z.lazy(() => SortOrderSchema).optional(),
   cover: z.lazy(() => SortOrderSchema).optional(),
   union: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   keywords: z.lazy(() => SortOrderSchema).optional(),
   sport: z.lazy(() => SortOrderSchema).optional(),
   movement: z.lazy(() => SortOrderSchema).optional(),
@@ -880,6 +898,7 @@ export const ActivitiesMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Activiti
   logo: z.lazy(() => SortOrderSchema).optional(),
   cover: z.lazy(() => SortOrderSchema).optional(),
   union: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   sport: z.lazy(() => SortOrderSchema).optional(),
   movement: z.lazy(() => SortOrderSchema).optional(),
   environment: z.lazy(() => SortOrderSchema).optional(),
@@ -892,6 +911,7 @@ export const ActivitiesMinOrderByAggregateInputSchema: z.ZodType<Prisma.Activiti
   logo: z.lazy(() => SortOrderSchema).optional(),
   cover: z.lazy(() => SortOrderSchema).optional(),
   union: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   sport: z.lazy(() => SortOrderSchema).optional(),
   movement: z.lazy(() => SortOrderSchema).optional(),
   environment: z.lazy(() => SortOrderSchema).optional(),
@@ -1483,6 +1503,7 @@ export const ActivitiesCreateWithoutClubsInputSchema: z.ZodType<Prisma.Activitie
   logo: z.string(),
   cover: z.string(),
   union: z.string().optional().nullable(),
+  description: z.string(),
   keywords: z.union([ z.lazy(() => ActivitiesCreatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.boolean(),
   movement: z.boolean(),
@@ -1496,6 +1517,7 @@ export const ActivitiesUncheckedCreateWithoutClubsInputSchema: z.ZodType<Prisma.
   logo: z.string(),
   cover: z.string(),
   union: z.string().optional().nullable(),
+  description: z.string(),
   keywords: z.union([ z.lazy(() => ActivitiesCreatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.boolean(),
   movement: z.boolean(),
@@ -1545,6 +1567,7 @@ export const ActivitiesUpdateWithoutClubsInputSchema: z.ZodType<Prisma.Activitie
   logo: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cover: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   union: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   keywords: z.union([ z.lazy(() => ActivitiesUpdatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   movement: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1558,6 +1581,7 @@ export const ActivitiesUncheckedUpdateWithoutClubsInputSchema: z.ZodType<Prisma.
   logo: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   cover: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   union: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   keywords: z.union([ z.lazy(() => ActivitiesUpdatekeywordsInputSchema),z.string().array() ]).optional(),
   sport: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   movement: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
