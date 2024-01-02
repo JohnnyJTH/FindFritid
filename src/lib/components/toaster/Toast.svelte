@@ -50,7 +50,7 @@
 </script>
 
 <div
-  class="rounded-lg overflow-hidden bg-white dark:bg-dark text-foreground shadow-md"
+  class="rounded-lg overflow-hidden bg-card text-foreground shadow-md"
   in:fly={{ duration: 150, x: "100%" }}
   on:pointerenter={() => (hovering = true)}
   on:pointerleave={() => (hovering = false)}
@@ -58,11 +58,11 @@
   use:melt={$content(id)}
 >
   <div
-    class="relative h-1 rounded-full w-full overflow-hidden bg-[#dfdfdf] dark:bg-dark-hover"
+    class="relative h-1 rounded-full w-full overflow-hidden bg-card"
     use:melt={$progressEl}
   >
     <div
-      class="h-full w-full bg-[#f0f0f0] dark:bg-dark/80"
+      class="h-full w-full bg-card-hover"
       style={`transform: translateX(-${
         100 - (100 * ($progress ?? 0)) / ($max ?? 1)
       }%)`}
@@ -82,7 +82,7 @@
     </div>
     <button
       class="absolute right-4 top-4 grid place-items-center rounded-full text-foreground square-6
-      hover:bg-[#dfdfdf] dark:hover:bg-dark-hover"
+      hover:bg-card-hover p-1 transition-colors duration-150"
       use:melt={$close(id)}
     >
       <X class="square-4" />

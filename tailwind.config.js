@@ -1,5 +1,3 @@
-import { fontFamily } from "tailwindcss/defaultTheme";
-
 /** @type {import('tailwindcss').Config} */
 const config = {
 	plugins: [
@@ -50,7 +48,8 @@ const config = {
 				},
 				card: {
 					DEFAULT: "hsl(var(--card) / <alpha-value>)",
-					foreground: "hsl(var(--card-foreground) / <alpha-value>)"
+					foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+					hover: "hsl(var(--card-hover) / <alpha-value>)",
 				}
 			},
 			borderRadius: {
