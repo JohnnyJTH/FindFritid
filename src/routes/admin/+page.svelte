@@ -13,7 +13,6 @@
     import SelectEnum from "./_components/SelectEnum.svelte";
     import { Switch } from "$lib/components/ui/switch";
     import { Textarea } from "$lib/components/ui/textarea";
-    import { truncate } from "$lib/utils";
     import { Activity } from "$lib/components";
 
     onMount(async () => {
@@ -190,14 +189,16 @@
             <Button on:click={logout} variant="destructive">Log ud</Button>
         </div>
         <p class="!mt-0">Vælg venligst en aktivitet at administrere.</p>
-        {#each userData.activities as activity}
-            <Card on:click={() => selectActivity(activity)} class="cursor-pointer">
-                <CardHeader>
-                    <CardTitle class="mt-0">{activity.name}</CardTitle>
-                    <CardDescription>{activity.id}</CardDescription>
-                </CardHeader>
-            </Card>
-        {/each}
+        <div class="space-y-2">
+            {#each userData.activities as activity}
+                <Card on:click={() => selectActivity(activity)} class="cursor-pointer">
+                    <CardHeader>
+                        <CardTitle class="mt-0">{activity.name}</CardTitle>
+                        <CardDescription>{activity.id}</CardDescription>
+                    </CardHeader>
+                </Card>
+            {/each}
+        </div>
     {:else}
         <div class="space-y-6">
             <div class="space-y-2">

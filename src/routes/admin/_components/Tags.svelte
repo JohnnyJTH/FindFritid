@@ -3,7 +3,7 @@
     import type { Activities } from "@prisma/client";
     import { X } from "lucide-svelte";
 
-    export let activity: Activities;
+    export let activity: Omit<Activities, "id">;
     export let id = "keywords";
     const {
         elements: { root, input, tag, deleteTrigger, edit },

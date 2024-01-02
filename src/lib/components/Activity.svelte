@@ -4,7 +4,7 @@
     import * as Dialog from "$lib/components/ui/dialog";
     import { truncate } from "$lib/utils";
 
-    export let activity: Activities;
+    export let activity: Omit<Activities, "id">;
 </script>
 
 <div class="relative flex flex-col bg-card border border-border rounded-md overflow-hidden">

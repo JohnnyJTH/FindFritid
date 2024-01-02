@@ -11,7 +11,7 @@ export const POST: RequestHandler = async ({ request, locals: { db } }) => {
     const type = body.get("type") as "cover" | "logo" | null;
     const rawActivityId = body.get("activityId") as string | null;
     const activityId = rawActivityId ? parseInt(rawActivityId) : null;
-    if (!file || !name || !type || !activityId) return new Response("Invalid body", { status: 400 });
+    if (!file || !name || !type) return new Response("Invalid body", { status: 400 });
 
     const image = await file.arrayBuffer();
     const fileName = `${encodeURIComponent(`${name} ${type}`)}${file.name.slice(file.name.lastIndexOf("."))}`;
@@ -21,6 +21,10 @@ export const POST: RequestHandler = async ({ request, locals: { db } }) => {
         Body: image,
         ContentType: file.type,
     }));
+
+    if (!activityId) return json({
+        url: `https://findfritid.s3.eu-north-1.amazonaws.com/${encodeURIComponent(fileName)}`,
+    });
 
     const activity = await db.activities.update({
         where: { id: activityId },

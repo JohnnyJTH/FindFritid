@@ -83,10 +83,17 @@ model Locations {
 }
 
 model Users {
-  id         Int    @id @default(autoincrement())
-  name       String
-  username   String
-  password   String
-  union      String
-  activities Int[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  username    String
+  password    String
+  union       String
+  activities  Int[]
+  /// Users can only edit the activities that they have access to, admins can create new activities. 
+  permissions Permissions[] @default([User])
+}
+
+enum Permissions {
+  Admin
+  User
 }

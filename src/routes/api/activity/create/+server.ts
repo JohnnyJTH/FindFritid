@@ -1,8 +1,9 @@
 import { ActivitiesSchema, type Activities } from "$lib/types/db";
-import { type RequestHandler } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals: { db } }) => {
-    const body = await request.json() as { username: string, password: string, activity: Activities };
+    const body = await request.json() as { username: string, password: string, activity: Omit<Activities, "id"> };
     if (!body) {
         return new Response("No body", { status: 400 });
     }
@@ -15,19 +16,28 @@ export const POST: RequestHandler = async ({ request, locals: { db } }) => {
             password: body.password
         }
     })
-    if (!user) {
+    if (!user || !user.permissions.includes("Admin")) {
         return new Response("Invalid credentials", { status: 401 });
     }
-    if (!ActivitiesSchema.safeParse(body.activity).success) {
+    if (!ActivitiesSchema.omit({ id: true }).safeParse(body.activity).success) {
         return new Response("Invalid activity", { status: 400 });
     }
 
-    await db.activities.update({
-        where: {
-            id: body.activity.id
-        },
+    const activity = await db.activities.create({
         data: body.activity
     });
+    await db.users.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            activities: {
+                push: [activity.id]
+            }
+        }
+    });
 
-    return new Response("OK");
-};
+    return json({
+        id: activity.id
+    });
+}
