@@ -1,10 +1,8 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
-    import * as Dialog from "$lib/components/ui/dialog";
     import { Plus } from "lucide-svelte";
     import type { PageData } from "./$types";
     import Slider from "./_components/Slider.svelte";
-    import { truncate } from "$lib/utils";
     import { Activity } from "$lib/components";
 
     export let data: PageData;
