@@ -2,10 +2,29 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
+import type { Activities } from "./types/db";
 
 export { localStorageStore } from "./localStorageStore";
 
 export const truncate = (text: string) => (text.length > 100 ? `${text.slice(0, 100)}...` : text);
+
+export type Filter<T> = {
+    [K in keyof T]: {
+        fieldName: K;
+        operator: "like" | "equal" | "notLike" | "notEqual";
+        value: T[K];
+    };
+}[keyof T];
+
+const TRANSLATIONS = {
+    Both: "Begge",
+    Outdoor: "Udenfor",
+    Indoor: "Indenfor",
+    Neutral: "Neutralt",
+    Male: "Mandlig",
+    Female: "Kvindelig",
+};
+export const translateOption = (str: Filter<Activities>["value"]) => TRANSLATIONS[str as keyof typeof TRANSLATIONS] || str;
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

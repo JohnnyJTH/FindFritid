@@ -13,7 +13,7 @@
     import SelectEnum from "./_components/SelectEnum.svelte";
     import { Switch } from "$lib/components/ui/switch";
     import { Textarea } from "$lib/components/ui/textarea";
-    import { Activity } from "$lib/components";
+    import { ActivityPreview } from "$lib/components";
 
     onMount(async () => {
         if ($authStore.username != "" && $authStore.password != "") {
@@ -135,9 +135,12 @@
         <p class="!mt-0">Her kan du ændre {activityData.name} detaljer.</p>
         <div class="space-y-6">
             <div class="space-y-2 not-prose">
-                <Label>Forhåndsvisning</Label>
+                <div class="flex items-center space-x-4">
+                    <Label>Forhåndsvisning</Label>
+                    <Button variant="outline" href={`/aktivitet/${activityData.id}`}>Åben aktivitet</Button>
+                </div>
                 <div class="w-full sm:w-1/2 xl:w-1/4">
-                    <Activity activity={activityData} />
+                    <ActivityPreview activity={activityData} />
                 </div>
             </div>
             <div class="space-y-2">

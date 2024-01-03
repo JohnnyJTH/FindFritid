@@ -11,7 +11,7 @@
     import SelectEnum from "../_components/SelectEnum.svelte";
     import { Switch } from "$lib/components/ui/switch";
     import { Textarea } from "$lib/components/ui/textarea";
-    import { Activity } from "$lib/components";
+    import { Activity, ActivityPreview } from "$lib/components";
 
     onMount(async () => {
         if ($authStore.username != "" && $authStore.password != "") {
@@ -128,7 +128,7 @@
                 <div class="space-y-2 not-prose">
                     <Label>Forhåndsvisning</Label>
                     <div class="w-full sm:w-1/2 xl:w-1/4">
-                        <Activity activity={activityData} />
+                        <ActivityPreview activity={activityData} />
                     </div>
                 </div>
                 <div class="space-y-2">
