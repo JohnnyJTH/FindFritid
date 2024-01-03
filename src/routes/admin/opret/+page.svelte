@@ -166,6 +166,7 @@
                 <div class="space-y-2">
                     <Label for="keywords">Nøgleord</Label>
                     <Tags bind:activity={activityData} id="keywords" />
+                    <p class="text-sm text-muted-foreground">Tryk enter efter hvert nøgleord.</p>
                 </div>
                 <div class="space-y-2">
                     <Label for="sport">Sport</Label>

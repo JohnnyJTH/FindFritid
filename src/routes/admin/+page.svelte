@@ -100,6 +100,7 @@
     };
 
     let coverFiles: FileList | null = null;
+    let logoFiles: FileList | null = null;
     let uploading = false;
     const uploadImage = async (file: File, type: "cover" | "logo") => {
         if (uploading || !activityData) return;
@@ -152,6 +153,18 @@
                 >
             </div>
             <div class="space-y-2">
+                <Label for="logo">Logo</Label>
+                <input bind:files={logoFiles} type="file" accept=".png, .jpg, .jpeg" id="logo" class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
+                <p class="text-sm text-muted-foreground">Logoet vil hovedsageligt blive vist i en lille cirkel.</p>
+
+                <Button
+                    on:click={() => {
+                        if (logoFiles) uploadImage(logoFiles[0], "logo");
+                    }}
+                    disabled={!logoFiles || uploading}>Upload</Button
+                >
+            </div>
+            <div class="space-y-2">
                 <Label for="description">Beskrivelse</Label>
                 <Textarea bind:value={activityData.description} id="description" />
             </div>
@@ -162,6 +175,7 @@
             <div class="space-y-2">
                 <Label for="keywords">Nøgleord</Label>
                 <Tags bind:activity={activityData} id="keywords" />
+                <p class="text-sm text-muted-foreground">Tryk enter efter hvert nøgleord.</p>
             </div>
             <div class="space-y-2">
                 <Label for="sport">Sport</Label>
