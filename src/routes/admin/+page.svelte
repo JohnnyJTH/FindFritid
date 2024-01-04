@@ -203,7 +203,12 @@
     {:else if userData}
         <div class="flex justify-between items-center">
             <h1 class="mb-0">Velkommen {userData.user.name}</h1>
-            <Button on:click={logout} variant="destructive">Log ud</Button>
+            <div>
+                {#if userData.user.permissions.includes("Admin")}
+                    <Button href="/admin/opret" class="no-underline">Opret aktivitet</Button>
+                {/if}
+                <Button on:click={logout} variant="destructive">Log ud</Button>
+            </div>
         </div>
         <p class="!mt-0">Vælg venligst en aktivitet at administrere.</p>
         <div class="space-y-2">

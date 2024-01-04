@@ -9,7 +9,7 @@
 
 <div class="page-container">
     <div class="header">
-        <img class="w-full" src={activity.cover} alt={activity.name} />
+        <img style="view-transition-name: {activity.name.replaceAll(' ', '-')};" class="w-full" src={activity.cover} alt={activity.name} />
         <div class="relative pl-3 mt-[-6em]">
             <div class="flex space-x-2">
                 {#each activity.keywords as keyword}
