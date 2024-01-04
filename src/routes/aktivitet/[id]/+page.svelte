@@ -18,9 +18,9 @@
             </div>
             <div class="flex items-center bg-card-hover px-[0.25em] !mt-3 w-[calc(100%-20px)]">
                 {#if activity.logo}
-                    <img class="m-0 mr-2 w-12 h-12 rounded-full" src={activity.logo} alt={activity.name} />
+                    <img class="m-0 w-12 h-12 rounded-full" src={activity.logo} alt={activity.name} />
                 {/if}
-                <h1 class="!m-0 py-[0.25em] !leading-[1.5em]">{activity.name}</h1>
+                <h1 class="!m-0 !ml-2 py-[0.25em] !leading-[1.5em]">{activity.name}</h1>
             </div>
             <div class="meta flex not-prose">
                 <p class="mr-1">af <span class="font-bold">{activity.union}</span></p>
