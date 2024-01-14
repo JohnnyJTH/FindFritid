@@ -26,6 +26,9 @@ const TRANSLATIONS = {
 };
 export const translateOption = (str: Filter<Activities>["value"]) => TRANSLATIONS[str as keyof typeof TRANSLATIONS] || str;
 
+export const toTitleCase = (string: string) =>
+    string.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
