@@ -11,7 +11,7 @@
 
 <RadioGroupPrimitive.Root
 	bind:value
-	class={cn("grid gap-2", className)}
+	class={cn("grid gap-3", className)}
 	{...$$restProps}
 >
 	<slot />
