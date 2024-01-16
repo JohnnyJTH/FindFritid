@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ locals: { db }, params }) => {
 
     const activity = await db.activities.findFirst({
         where: { id },
+        include: { clubs: { include: { locations: true } } }
         // cacheStrategy: {
         //     ttl: 60 * 60 * 2,
         //     swr: 60 * 5,
