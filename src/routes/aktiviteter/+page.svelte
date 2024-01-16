@@ -1,6 +1,5 @@
 <script lang="ts">
     import { createDialog, melt } from "@melt-ui/svelte";
-    import { Button } from "$lib/components/ui/button";
     import { Plus } from "lucide-svelte";
     import type { PageData } from "./$types";
     import { Activity } from "$lib/components";
@@ -9,11 +8,22 @@
     import { fade, fly } from "svelte/transition";
 
     export let data: PageData;
-    $: keywords = data.activities.flatMap((activity) => activity.keywords).filter((keyword, index, keywords) => keywords.indexOf(keyword) === index);
+    const activities = data.activities;
 
+    let keywords = Object.fromEntries(
+        activities
+            .flatMap((activity) => activity.keywords)
+            .filter((keyword, index, keywords) => keywords.indexOf(keyword) === index)
+            .map((keyword) => [keyword, false]),
+    );
     let environment: Activities["environment"] = "Both";
     let gender: Activities["gender"] = "Neutral";
-    $: activities = data.activities;
+    $: filteredActivities = activities.filter((activity) => {
+        if (environment !== "Both" && activity.environment !== environment) return false;
+        if (gender !== "Neutral" && activity.gender !== gender) return false;
+        if (Object.keys(keywords).some((keyword) => keywords[keyword] && !activity.keywords.includes(keyword))) return false;
+        return true;
+    });
 
     const {
         elements: { content, overlay, portalled, trigger },
@@ -31,15 +41,19 @@
             <h2 class="sr-only">Filtre</h2>
             <button use:melt={$trigger} class="inline-flex lg:hidden items-center text-sm font-medium">Filtre <Plus class="text-gray-500" /></button>
             <div class="hidden lg:block">
-                <Filters {environment} {gender} {keywords} />
+                <Filters bind:environment bind:gender bind:keywords />
             </div>
         </aside>
         <section class="mt-6 lg:mt-0 col-span-2 xl:col-span-3">
             <h2 class="sr-only">Aktiviteter</h2>
             <div class="grid gap-y-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-y-10 sm:gap-x-6 lg:gap-x-8">
-                {#each activities as activity}
-                    <Activity {activity} />
-                {/each}
+                {#if filteredActivities.length > 0}
+                    {#each filteredActivities as activity}
+                        <Activity {activity} />
+                    {/each}
+                {:else}
+                    <p>Ingen aktiviteter matchede din søgning.</p>
+                {/if}
             </div>
         </section>
     </div>
