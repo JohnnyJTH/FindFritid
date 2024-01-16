@@ -34,6 +34,12 @@ model Activities {
   /// The keywords of the activity
   /// @zod.string.array(.min(5, {message: "Der skal være mindst 5 nøgleord"}).max(10, {message: "Der må ikke være flere end 10 nøgleord"}))
   keywords    String[]
+  /// The required equipment of the activity
+  /// @zod.string.array(.max(10, {message: "Der må ikke være mere end 10 stykker udstyr"}))
+  equipment   String[] @default([])
+  /// The health benefits of the activity
+  /// @zod.string.array(.max(10, {message: "Der må ikke være mere end 10 sundhedsmæssige fordele"}))
+  health      String[] @default([])
   sport       Boolean
   movement    Boolean
   environment Environment
