@@ -11,7 +11,7 @@
     import SelectEnum from "../_components/SelectEnum.svelte";
     import { Switch } from "$lib/components/ui/switch";
     import { Textarea } from "$lib/components/ui/textarea";
-    import { Activity, ActivityPreview } from "$lib/components";
+    import { ActivityPreview } from "$lib/components";
 
     onMount(async () => {
         if ($authStore.username != "" && $authStore.password != "") {
