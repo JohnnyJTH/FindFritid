@@ -6,6 +6,8 @@
     import Filters from "./_components/Filters.svelte";
     import type { Activities } from "$lib/types/db";
     import { fade, fly } from "svelte/transition";
+    import { Input } from "$lib/components/ui/input";
+    import { Button } from "$lib/components/ui/button";
 
     export let data: PageData;
     const activities = data.activities;
@@ -18,12 +20,33 @@
     );
     let environment: Activities["environment"] = "Both";
     let gender: Activities["gender"] = "Neutral";
+    let searchString = "";
     $: filteredActivities = activities.filter((activity) => {
+        if (searchString && !matchesSearchTerm(activity)) return false;
         if (environment !== "Both" && activity.environment !== environment) return false;
         if (gender !== "Neutral" && activity.gender !== gender) return false;
         if (Object.keys(keywords).some((keyword) => keywords[keyword] && !activity.keywords.includes(keyword))) return false;
         return true;
     });
+
+    const resetFilters = () => {
+        keywords = Object.fromEntries(
+            activities
+                .flatMap((activity) => activity.keywords)
+                .filter((keyword, index, keywords) => keywords.indexOf(keyword) === index)
+                .map((keyword) => [keyword, false]),
+        );
+        environment = "Both";
+        gender = "Neutral";
+        searchString = "";
+    };
+
+    const matchesSearchTerm = (activity: Activities) => {
+        const searchTerms = searchString.toLowerCase().split(" ");
+        return searchTerms.every((searchTerm) => {
+            return activity.name.toLowerCase().includes(searchTerm) || activity.description.toLowerCase().includes(searchTerm) || activity.keywords.some((keyword) => keyword.toLowerCase().includes(searchTerm));
+        });
+    };
 
     const {
         elements: { content, overlay, portalled, trigger },
@@ -39,22 +62,27 @@
     <div class="lg:grid lg:grid-cols-3 xl:grid-cols-4 lg:gap-8 pt-12">
         <aside>
             <h2 class="sr-only">Filtre</h2>
-            <button use:melt={$trigger} class="inline-flex lg:hidden items-center text-sm font-medium">Filtre <Plus class="text-gray-500" /></button>
+            <div class="flex lg:hidden items-center justify-between">
+                <button use:melt={$trigger} class="inline-flex items-center text-sm font-medium">Filtre <Plus class="text-gray-500" /></button>
+                <Input bind:value={searchString} placeholder="Søg..." class="max-w-64" />
+            </div>
             <div class="hidden lg:block">
+                <Input bind:value={searchString} placeholder="Søg..." class="mb-6" />
                 <Filters bind:environment bind:gender bind:keywords />
             </div>
         </aside>
         <section class="mt-6 lg:mt-0 col-span-2 xl:col-span-3">
             <h2 class="sr-only">Aktiviteter</h2>
-            <div class="grid gap-y-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-y-10 sm:gap-x-6 lg:gap-x-8">
-                {#if filteredActivities.length > 0}
+            {#if filteredActivities.length > 0}
+                <div class="grid gap-y-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-y-10 sm:gap-x-6 lg:gap-x-8">
                     {#each filteredActivities as activity}
                         <Activity {activity} />
                     {/each}
-                {:else}
-                    <p>Ingen aktiviteter matchede din søgning.</p>
-                {/if}
-            </div>
+                </div>
+            {:else}
+                <p>Ingen aktiviteter matchede dine filtre.</p>
+                <Button variant="destructive" class="mt-6" on:click={resetFilters}>Nulstil filtre</Button>
+            {/if}
         </section>
     </div>
 </div>
