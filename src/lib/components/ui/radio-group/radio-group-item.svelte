@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { RadioGroup as RadioGroupPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils";
-    import { Check } from "lucide-svelte";
 
 	type $$Props = RadioGroupPrimitive.ItemProps & {
 		value: string;
@@ -13,18 +12,4 @@
 	export { className as class };
 </script>
 
-<RadioGroupPrimitive.Item
-	{value}
-	class={cn(
-		"aspect-square h-5 w-5 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-		className
-	)}
-	{...$$restProps}
-	on:click
->
-	<div class="flex items-center justify-center">
-		<RadioGroupPrimitive.ItemIndicator>
-			<Check class="h-4 w-4" />
-		</RadioGroupPrimitive.ItemIndicator>
-	</div>
-</RadioGroupPrimitive.Item>
+<RadioGroupPrimitive.Item {value} class={cn("shrink-0 sq-5 rounded-full border border-border-input bg-background transition-all duration-150 ease-in-out hover:border-dark-40 data-[state=checked]:border-6 data-[state=checked]:border-foreground", className)} {...$$restProps} on:click />

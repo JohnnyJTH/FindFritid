@@ -1,8 +1,27 @@
-/** @type {import('tailwindcss').Config} */
-const config = {
+import { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
+import aspect from "@tailwindcss/aspect-ratio";
+import typography from "@tailwindcss/typography";
+
+
+export default {
 	plugins: [
-		require('@tailwindcss/typography'),
-		require('@tailwindcss/aspect-ratio'),
+		typography,
+		aspect,
+		plugin(function ({ theme, matchUtilities }) {
+			// Square utility
+			matchUtilities(
+				{
+					sq: (value) => ({
+						width: value,
+						height: value
+					})
+				},
+				{
+					values: theme("spacing")
+				}
+			);
+		})
 	],
 	darkMode: ["class"],
 	content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -18,6 +37,7 @@ const config = {
 		extend: {
 			colors: {
 				border: "hsl(var(--border) / <alpha-value>)",
+				"border-hover": "hsl(var(--border-hover) / <alpha-value>)",
 				input: "hsl(var(--input) / <alpha-value>)",
 				ring: "hsl(var(--ring) / <alpha-value>)",
 				background: "hsl(var(--background) / <alpha-value>)",
@@ -56,9 +76,16 @@ const config = {
 				lg: "var(--radius)",
 				md: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)"
+			},
+			borderWidth: {
+				6: "6px"
+			},
+			scale: {
+				80: ".80",
+				98: ".98",
+				99: ".99"
 			}
 		}
 	},
-};
+} satisfies Config;
 
-export default config;
