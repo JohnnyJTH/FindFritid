@@ -8,6 +8,6 @@
 	export { className as class };
 </script>
 
-<svelte:element this={href ? "a" : "span"} on:click {href} class={cn(badgeVariants({ variant, className }))} {...$$restProps}>
+<svelte:element this={href ? "a" : "span"} role={href ? "link" : "button"} on:click {href} class={cn(badgeVariants({ variant, className }))} {...$$restProps}>
 	<slot />
 </svelte:element>
