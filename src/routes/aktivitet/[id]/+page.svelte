@@ -36,14 +36,14 @@
 
                 const popup = new mapboxgl.Popup({ offset: 25, closeButton: false, className: "[&>.mapboxgl-popup-content]:bg-popover text-foreground" }).setHTML(`<h3>${location.name}</h3><h4>${club.name}</h4><p>${club.description}</p>`);
 
-                const latlng = location.address.split(", ").reverse();
+                const latlng = location.address.split(", ").reverse().map(parseFloat) as [number, number];
                 new mapboxgl.Marker(el).setLngLat(latlng).setPopup(popup).addTo(map);
             }
         }
     });
 </script>
 
-<div class="page-container mb-20 h-">
+<div class="page-container mb-20">
     <div class="header">
         <img style="view-transition-name: {activity.name.replaceAll(' ', '-')};" class="w-full" src={activity.cover} alt={activity.name} />
         <div class="relative pl-3 mt-[-6em]">

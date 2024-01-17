@@ -18,6 +18,6 @@
 <ViewTransition />
 <SiteHeader />
 
-<div class="prose dark:prose-invert max-w-none">
+<div class="prose dark:prose-invert max-w-none h-full">
   <slot />
 </div>
