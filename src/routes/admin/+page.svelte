@@ -14,6 +14,7 @@
     import { Switch } from "$lib/components/ui/switch";
     import { Textarea } from "$lib/components/ui/textarea";
     import { ActivityPreview } from "$lib/components";
+    import { Trash } from "lucide-svelte";
 
     onMount(async () => {
         if ($authStore.username != "" && $authStore.password != "") {
@@ -181,6 +182,60 @@
                 <p class="text-sm text-muted-foreground">Tryk enter efter hvert nøgleord.</p>
             </div>
             <div class="space-y-2">
+                <Label for="keywords">Udstyr</Label>
+                <div class="space-y-2">
+                    {#each activityData.equipment as equipment, i}
+                        <div class="flex items-center space-x-2">
+                            <Input bind:value={equipment} placeholder="Skriv..." />
+                            <Button
+                                on:click={() => {
+                                    // @ts-ignore Ikke engang gud ved hvorfor activityData kunne være null
+                                    activityData.equipment.splice(i, 1);
+                                    // @ts-ignore
+                                    activityData.equipment = [...activityData.equipment];
+                                }}
+                                variant="destructive"><Trash /></Button
+                            >
+                        </div>
+                    {/each}
+                    <Button
+                        on:click={() => {
+                            // @ts-ignore der er literally et if statement der sørger for at activityData ikke er null
+                            activityData.equipment.push("");
+                            // @ts-ignore
+                            activityData.equipment = [...activityData.equipment];
+                        }}>Tilføj</Button
+                    >
+                </div>
+            </div>
+            <div class="space-y-2">
+                <Label for="keywords">Sundhedsmæssige Fordele</Label>
+                <div class="space-y-2">
+                    {#each activityData.health as benefit, i}
+                        <div class="flex items-center space-x-2">
+                            <Input bind:value={benefit} placeholder="Skriv..." />
+                            <Button
+                                on:click={() => {
+                                    // @ts-ignore Ikke engang gud ved hvorfor activityData kunne være null
+                                    activityData.benefit.splice(i, 1);
+                                    // @ts-ignore
+                                    activityData.benefit = [...activityData.benefit];
+                                }}
+                                variant="destructive"><Trash /></Button
+                            >
+                        </div>
+                    {/each}
+                    <Button
+                        on:click={() => {
+                            // @ts-ignore der er literally et if statement der sørger for at activityData ikke er null
+                            activityData.benefit.push("");
+                            // @ts-ignore
+                            activityData.benefit = [...activityData.benefit];
+                        }}>Tilføj</Button
+                    >
+                </div>
+            </div>
+            <div class="space-y-2">
                 <Label for="sport">Sport</Label>
                 <Switch bind:checked={activityData.sport} class="block" id="sport" />
             </div>
@@ -190,12 +245,12 @@
             </div>
             <div class="space-y-2">
                 <Label for="environment">Miljø</Label>
-                <SelectEnum bind:acticityProperty={activityData.environment} options={["Both", "Outdoor", "Indoor"]} />
+                <SelectEnum bind:activityProperty={activityData.environment} options={["Both", "Outdoor", "Indoor"]} />
                 <p class="text-sm text-muted-foreground">Om aktiviteten hovedsageligt bliver afhold i et miljø.</p>
             </div>
             <div class="space-y-2">
                 <Label for="gender">Køn</Label>
-                <SelectEnum bind:acticityProperty={activityData.gender} options={["Neutral", "Male", "Female"]} />
+                <SelectEnum bind:activityProperty={activityData.gender} options={["Neutral", "Male", "Female"]} />
                 <p class="text-sm text-muted-foreground">Om aktiviteten er mere rettet mod et køn.</p>
             </div>
             <Button on:click={submitActivity}>Gem</Button>

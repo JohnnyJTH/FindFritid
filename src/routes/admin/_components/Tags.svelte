@@ -19,13 +19,13 @@
 <div class="flex flex-col items-start justify-center gap-2">
     <div
         use:melt={$root}
-        class="flex min-w-[280px] flex-row flex-wrap gap-2.5 rounded-md border border-input bg-background px-3 py-2 text-white dark:text-foreground
+        class="flex min-w-[280px] flex-row flex-wrap gap-2.5 rounded-md border border-input bg-background px-3 py-2 text-white dark:text-black
       focus-within:ring focus-within:ring-primary"
     >
         {#each $tags as t}
             <div
                 use:melt={$tag(t)}
-                class="flex items-center overflow-hidden rounded-md bg-primary text-white dark:text-foreground [word-break:break-word]
+                class="flex items-center overflow-hidden rounded-md bg-primary text-white dark:text-black [word-break:break-word]
         data-[disabled]:bg-primary/40 data-[selected]:bg-primary/60 data-[disabled]:hover:cursor-default
           data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
             >

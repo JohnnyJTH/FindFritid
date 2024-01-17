@@ -4,17 +4,17 @@
     import { type Filter, translateOption } from "$lib/utils";
 
     export let options: Filter<Activities>["value"][] = [];
-    export let acticityProperty: Filter<Activities>["value"];
+    export let activityProperty: Filter<Activities>["value"];
 </script>
 
 <div class="flex">
     {#each options as option}
         <Badge
             on:click={() => {
-                acticityProperty = option;
+                activityProperty = option;
             }}
             class="mr-2 cursor-pointer"
-            variant={option == acticityProperty ? "default" : "secondary"}>{translateOption(option)}</Badge
+            variant={option == activityProperty ? "default" : "secondary"}>{translateOption(option)}</Badge
         >
     {/each}
 </div>
