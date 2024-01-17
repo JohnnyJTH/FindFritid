@@ -217,9 +217,9 @@
                             <Button
                                 on:click={() => {
                                     // @ts-ignore Ikke engang gud ved hvorfor activityData kunne være null
-                                    activityData.benefit.splice(i, 1);
+                                    activityData.health.splice(i, 1);
                                     // @ts-ignore
-                                    activityData.benefit = [...activityData.benefit];
+                                    activityData.health = [...activityData.health];
                                 }}
                                 variant="destructive"><Trash /></Button
                             >
@@ -228,9 +228,9 @@
                     <Button
                         on:click={() => {
                             // @ts-ignore der er literally et if statement der sørger for at activityData ikke er null
-                            activityData.benefit.push("");
+                            activityData.health.push("");
                             // @ts-ignore
-                            activityData.benefit = [...activityData.benefit];
+                            activityData.health = [...activityData.health];
                         }}>Tilføj</Button
                     >
                 </div>
