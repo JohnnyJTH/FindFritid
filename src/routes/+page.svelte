@@ -68,6 +68,7 @@
                 mapboxgl: mapboxgl,
                 marker: true,
                 bbox: [7.734375, 54.527457, 12.996826, 57.856443],
+                placeholder: "Søg efter adresse...",
             });
 
             buildLocationList(geoLocations);
@@ -195,7 +196,7 @@
             const popUps = document.getElementsByClassName("mapboxgl-popup");
             if (popUps[0]) popUps[0].remove();
 
-            new mapboxgl.Popup({ offset: 25, closeButton: false, closeOnClick: false, className: "[&>.mapboxgl-popup-content]:bg-popover text-foreground" }).setLngLat(currentFeature.geometry.coordinates).setHTML(`<h3>${currentFeature.properties.title}</h3><h4>${currentFeature.properties.clubName}</h4><p>${currentFeature.properties.clubDescription}</p>`).addTo(map);
+            new mapboxgl.Popup({ offset: 25, closeButton: false, closeOnClick: false, className: "[&>.mapboxgl-popup-content]:bg-popover text-foreground" }).setLngLat(currentFeature.geometry.coordinates).setHTML(`<h3 class="text-lg">${currentFeature.properties.title}</h3><h4>${currentFeature.properties.clubName}</h4><p>${currentFeature.properties.clubDescription}</p>`).addTo(map);
         };
     });
 </script>
