@@ -7,11 +7,12 @@ export const load: PageServerLoad = async ({ locals: { db }, params }) => {
 
     const activity = await db.activities.findFirst({
         where: { id },
-        include: { clubs: { include: { locations: true } } }
-        // cacheStrategy: {
-        //     ttl: 60 * 60 * 2,
-        //     swr: 60 * 5,
-        // }
+        include: { clubs: { include: { locations: true } } },
+        // @ts-expect-error dont know why
+        cacheStrategy: {
+            ttl: 60 * 60 * 2,
+            swr: 60 * 5,
+        }
     });
     if (!activity) return error(404, 'Aktiviteten findes ikke');
     return { activity }

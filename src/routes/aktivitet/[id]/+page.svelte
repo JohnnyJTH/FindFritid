@@ -1,13 +1,13 @@
 <script lang="ts">
     import mapboxgl from "mapbox-gl";
     import { onMount } from "svelte";
+    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "$lib/components/ui/card";
     import { Badge } from "$lib/components/ui/badge";
     import { translateOption } from "$lib/utils";
     import type { PageData } from "./$types";
     import { PUBLIC_MAPBOX_TOKEN } from "$env/static/public";
 
     import "mapbox-gl/dist/mapbox-gl.css";
-    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "$lib/components/ui/card";
     mapboxgl.accessToken = PUBLIC_MAPBOX_TOKEN;
 
     export let data: PageData;
@@ -43,7 +43,7 @@
     });
 </script>
 
-<div class="page-container mb-20">
+<div class="page-container mb-20 h-">
     <div class="header">
         <img style="view-transition-name: {activity.name.replaceAll(' ', '-')};" class="w-full" src={activity.cover} alt={activity.name} />
         <div class="relative pl-3 mt-[-6em]">
