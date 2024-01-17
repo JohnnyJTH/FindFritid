@@ -3,8 +3,25 @@ import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
 import type { Activities } from "./types/db";
+import type { LngLatGeometry } from "./types/geo";
+const { atan2, cos, sin, sqrt, PI } = Math
 
 export { localStorageStore } from "./localStorageStore";
+
+export const distanceBetween = (a: LngLatGeometry, b: LngLatGeometry) => {
+    const R = 6371e3; // earth radius in meters
+    const φ1 = a.coordinates[1] * PI / 180; // φ, λ in radians
+    const φ2 = b.coordinates[1] * PI / 180;
+    const Δφ = (b.coordinates[1] - a.coordinates[1]) * PI / 180;
+    const Δλ = (b.coordinates[0] - a.coordinates[0]) * PI / 180;
+
+    const x = sin(Δφ / 2) * sin(Δφ / 2) +
+        cos(φ1) * cos(φ2) *
+        sin(Δλ / 2) * sin(Δλ / 2);
+    const y = 2 * atan2(sqrt(x), sqrt(1 - x));
+
+    return R * y; // meters
+}
 
 export const truncate = (text: string) => (text.length > 100 ? `${text.slice(0, 100)}...` : text);
 

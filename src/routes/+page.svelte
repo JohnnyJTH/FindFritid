@@ -2,13 +2,14 @@
     import { onMount } from "svelte";
     import mapboxgl from "mapbox-gl";
     import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-    import distance from "@turf/distance";
     import { type Locations, type Clubs } from "$lib/types/db";
     import type { PageData } from "./$types";
     import { PUBLIC_MAPBOX_TOKEN } from "$env/static/public";
 
     import "mapbox-gl/dist/mapbox-gl.css";
     import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+    import { distanceBetween } from "$lib/utils";
+    import type { LngLatGeometry } from "$lib/types/geo";
     mapboxgl.accessToken = PUBLIC_MAPBOX_TOKEN;
 
     export let data: PageData;
@@ -20,7 +21,7 @@
             const club = clubs.find((club) => club.id === location.clubId);
             if (club) locations.push({ club, ...location });
         });
-    const geoLocations = {
+    const geoLocations: GeoJSON.FeatureCollection<LngLatGeometry, { id: number; title: string; clubName: string; clubDescription: string; logo: string; distance: number }> = {
         type: "FeatureCollection",
         features: locations.map((location, i) => ({
             type: "Feature",
@@ -29,7 +30,7 @@
                 coordinates: location.address
                     .split(", ")
                     .reverse()
-                    .map((coord) => parseFloat(coord)),
+                    .map((coord) => parseFloat(coord)) as [number, number],
             },
             properties: {
                 id: i,
@@ -55,6 +56,9 @@
         });
 
         map.on("load", () => {
+            map.addControl(new mapboxgl.NavigationControl());
+            map.addControl(new mapboxgl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, showUserHeading: true }));
+
             map.addSource("places", {
                 type: "geojson",
                 data: geoLocations,
@@ -67,14 +71,14 @@
             });
 
             buildLocationList(geoLocations);
-            map.addControl(geocoder, "top-right");
+            map.addControl(geocoder, "top-left");
             addMarkers();
 
             geocoder.on("result", (event) => {
                 const searchResult = event.result.geometry;
 
                 for (const location of geoLocations.features) {
-                    location.properties.distance = distance(searchResult, location.geometry);
+                    location.properties.distance = distanceBetween(searchResult, location.geometry) / 1000;
                 }
 
                 geoLocations.features.sort((a, b) => a.properties.distance - b.properties.distance);
@@ -97,7 +101,7 @@
             });
         });
 
-        const getBbox = (sortedLocations: typeof geoLocations, locationId: number, searchResult: { coordinates: number[] }) => {
+        const getBbox = (sortedLocations: typeof geoLocations, locationId: number, searchResult: { coordinates: number[] }): [number, number, number, number] => {
             const lats = [sortedLocations.features[locationId].geometry.coordinates[1], searchResult.coordinates[1]];
             const lons = [sortedLocations.features[locationId].geometry.coordinates[0], searchResult.coordinates[0]];
             const sortedLons = lons.sort((a, b) => {
@@ -118,10 +122,7 @@
                 }
                 return 0;
             });
-            return [
-                [sortedLons[0], sortedLats[0]],
-                [sortedLons[1], sortedLats[1]],
-            ];
+            return [sortedLons[0], sortedLats[0], sortedLons[1], sortedLats[1]];
         };
 
         const addMarkers = () => {
@@ -132,7 +133,7 @@
                 el.style.backgroundImage = `url(${location.properties.logo})`;
                 el.style.backgroundSize = "100%";
 
-                new mapboxgl.Marker(el).setLngLat(location.geometry.coordinates).addTo(map);
+                new mapboxgl.Marker(el).setLngLat(location.geometry.coordinates as [number, number]).addTo(map);
 
                 el.addEventListener("click", (e) => {
                     flyToStore(location);
@@ -157,7 +158,7 @@
                 listing.id = `listing-${location.properties.id}`;
                 listing.href = "#";
                 const card = listing.appendChild(document.createElement("div"));
-                card.className = "rounded-md border bg-card hover:bg-card-hover text-card-foreground shadow";
+                card.className = "mb-2 rounded-md border bg-card hover:bg-card-hover text-card-foreground shadow px-1";
                 card.innerHTML = `<h2 class="text-lg font-medium">${location.properties.title}</h2>`;
 
                 const details = card.appendChild(document.createElement("div"));
@@ -206,9 +207,3 @@
     </div>
     <div id="map" class="absolute h-[calc(100%-3.5rem)] w-2/3 left-1/3 top-14 bottom-0"></div>
 </div>
-
-<style>
-    .a-mt-2 > a {
-        @apply mt-2;
-    }
-</style>
