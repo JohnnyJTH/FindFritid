@@ -200,7 +200,7 @@
     });
 </script>
 
-<div class="page-container not-prose h-full">
+<div class="page-container not-prose max-w-none">
     <div class="absolute w-1/3 h-[calc(100%-3.5rem)] top-14 left-0 overflow-hidden border-r">
         <h1 class="text-center leading-[4rem] text-2xl font-bold">Find en aktivitet tæt på dig</h1>
         <div id="listings" class="h-full overflow-auto pb-16 p-2 a-mt-2"></div>
