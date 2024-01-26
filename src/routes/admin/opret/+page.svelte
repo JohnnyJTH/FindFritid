@@ -31,6 +31,8 @@
         movement: false,
         environment: "Both",
         gender: "Neutral",
+        equipment: [],
+        health: [],
         logo: "",
         cover: "",
     };
@@ -112,9 +114,9 @@
     };
 </script>
 
-<div class="page-container py-10">
+<div class="py-10 page-container">
     {#if userData}
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
             <h1 class="mb-0">Opret aktivitet</h1>
             <Button href="/admin" variant="outline" class="no-underline">Tilbage til aktiviteter</Button>
         </div>
@@ -133,7 +135,7 @@
                 </div>
                 <div class="space-y-2">
                     <Label for="cover">Billede</Label>
-                    <input bind:files={coverFiles} type="file" accept=".png, .jpg, .jpeg" id="cover" class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
+                    <input bind:files={coverFiles} type="file" accept=".png, .jpg, .jpeg" id="cover" class="flex w-full px-3 py-1 text-sm transition-colors border rounded-md shadow-sm h-9 border-input bg-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
                     <p class="text-sm text-muted-foreground">Billedet vil hovedsageligt blive vist i 3/2 aspect ratio.</p>
 
                     <Button
@@ -145,7 +147,7 @@
                 </div>
                 <div class="space-y-2">
                     <Label for="logo">Logo</Label>
-                    <input bind:files={logoFiles} type="file" accept=".png, .jpg, .jpeg" id="logo" class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
+                    <input bind:files={logoFiles} type="file" accept=".png, .jpg, .jpeg" id="logo" class="flex w-full px-3 py-1 text-sm transition-colors border rounded-md shadow-sm h-9 border-input bg-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
                     <p class="text-sm text-muted-foreground">Logoet vil hovedsageligt blive vist i en lille cirkel.</p>
 
                     <Button
@@ -178,12 +180,12 @@
                 </div>
                 <div class="space-y-2">
                     <Label for="environment">Miljø</Label>
-                    <SelectEnum bind:acticityProperty={activityData.environment} options={["Both", "Outdoor", "Indoor"]} />
+                    <SelectEnum bind:activityProperty={activityData.environment} options={["Both", "Outdoor", "Indoor"]} />
                     <p class="text-sm text-muted-foreground">Om aktiviteten hovedsageligt bliver afhold i et miljø.</p>
                 </div>
                 <div class="space-y-2">
                     <Label for="gender">Køn</Label>
-                    <SelectEnum bind:acticityProperty={activityData.gender} options={["Neutral", "Male", "Female"]} />
+                    <SelectEnum bind:activityProperty={activityData.gender} options={["Neutral", "Male", "Female"]} />
                     <p class="text-sm text-muted-foreground">Om aktiviteten er mere rettet mod et køn.</p>
                 </div>
                 <Button on:click={createActivity}>Opret</Button>
