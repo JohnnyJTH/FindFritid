@@ -271,4 +271,7 @@
         id="map"
         class="absolute h-[calc(100%-3.5rem)] w-2/3 left-1/3 top-14 bottom-0"
     ></div>
+    <div class="h-full text-transparent">
+        test
+    </div>
 </div>
