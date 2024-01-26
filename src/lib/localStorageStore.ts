@@ -12,71 +12,76 @@ declare type StoreDict<T> = { [key: string]: Writable<T> };
 const stores: StoreDict<any> = {};
 
 interface Serializer<T> {
-  parse(text: string): T;
-  stringify(object: T): string;
+    parse(text: string): T;
+    stringify(object: T): string;
 }
 
 type StorageType = "local" | "session";
 
 interface Options<T> {
-  serializer?: Serializer<T>;
-  storage?: StorageType;
+    serializer?: Serializer<T>;
+    storage?: StorageType;
 }
 
 function getStorage(type: StorageType) {
-  return type === "local" ? localStorage : sessionStorage;
+    return type === "local" ? localStorage : sessionStorage;
 }
 
 export function localStorageStore<T>(
-  key: string,
-  initialValue: T,
-  options?: Options<T>,
+    key: string,
+    initialValue: T,
+    options?: Options<T>,
 ): Writable<T> {
-  const serializer = options?.serializer ?? JSON;
-  const storageType = options?.storage ?? "local";
+    const serializer = options?.serializer ?? JSON;
+    const storageType = options?.storage ?? "local";
 
-  function updateStorage(key: string, value: T) {
-    if (!BROWSER) return;
+    function updateStorage(key: string, value: T) {
+        if (!BROWSER) return;
 
-    getStorage(storageType).setItem(key, serializer.stringify(value));
-  }
+        getStorage(storageType).setItem(key, serializer.stringify(value));
+    }
 
-  if (!stores[key]) {
-    const store = internal(initialValue, (set) => {
-      const json = BROWSER ? getStorage(storageType).getItem(key) : null;
+    if (!stores[key]) {
+        const store = internal(initialValue, (set) => {
+            const json = BROWSER ? getStorage(storageType).getItem(key) : null;
 
-      if (json) {
-        set(<T>serializer.parse(json));
-      }
+            if (json) {
+                set(<T>serializer.parse(json));
+            }
 
-      if (BROWSER) {
-        const handleStorage = (event: StorageEvent) => {
-          if (event.key === key)
-            set(event.newValue ? serializer.parse(event.newValue) : null);
+            if (BROWSER) {
+                const handleStorage = (event: StorageEvent) => {
+                    if (event.key === key)
+                        set(
+                            event.newValue
+                                ? serializer.parse(event.newValue)
+                                : null,
+                        );
+                };
+
+                window.addEventListener("storage", handleStorage);
+
+                return () =>
+                    window.removeEventListener("storage", handleStorage);
+            }
+        });
+
+        const { set, subscribe } = store;
+
+        stores[key] = {
+            set(value: T) {
+                updateStorage(key, value);
+                set(value);
+            },
+            subscribe,
+            update(updater: Updater<T>) {
+                const value = updater(get(store));
+
+                updateStorage(key, value);
+                set(value);
+            },
         };
+    }
 
-        window.addEventListener("storage", handleStorage);
-
-        return () => window.removeEventListener("storage", handleStorage);
-      }
-    });
-
-    const { set, subscribe } = store;
-
-    stores[key] = {
-      set(value: T) {
-        updateStorage(key, value);
-        set(value);
-      },
-      subscribe,
-      update(updater: Updater<T>) {
-        const value = updater(get(store));
-
-        updateStorage(key, value);
-        set(value);
-      },
-    };
-  }
-
-  return stores[key];
+    return stores[key];
 }

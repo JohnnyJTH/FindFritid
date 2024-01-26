@@ -1,7 +1,13 @@
 <script lang="ts">
     import mapboxgl from "mapbox-gl";
     import { onMount } from "svelte";
-    import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "$lib/components/ui/card";
+    import {
+        Card,
+        CardContent,
+        CardDescription,
+        CardHeader,
+        CardTitle,
+    } from "$lib/components/ui/card";
     import { Badge } from "$lib/components/ui/badge";
     import { translateOption } from "$lib/utils";
     import type { PageData } from "./$types";
@@ -23,7 +29,7 @@
             ],
             center: [11.943512, 55.478853],
             zoom: 7,
-            minZoom: 7
+            minZoom: 7,
         });
         for (const club of activity.clubs) {
             for (const location of club.locations) {
@@ -34,10 +40,23 @@
                 el.style.height = `40px`;
                 el.style.backgroundSize = "100%";
 
-                const popup = new mapboxgl.Popup({ offset: 25, closeButton: false, className: "[&>.mapboxgl-popup-content]:bg-popover text-foreground" }).setHTML(`<h3>${location.name}</h3><h4>${club.name}</h4><p>${club.description}</p>`);
+                const popup = new mapboxgl.Popup({
+                    offset: 25,
+                    closeButton: false,
+                    className:
+                        "[&>.mapboxgl-popup-content]:bg-popover text-foreground",
+                }).setHTML(
+                    `<h3>${location.name}</h3><h4>${club.name}</h4><p>${club.description}</p>`,
+                );
 
-                const latlng = location.address.split(", ").reverse().map(parseFloat) as [number, number];
-                new mapboxgl.Marker(el).setLngLat(latlng).setPopup(popup).addTo(map);
+                const latlng = location.address
+                    .split(", ")
+                    .reverse()
+                    .map(parseFloat) as [number, number];
+                new mapboxgl.Marker(el)
+                    .setLngLat(latlng)
+                    .setPopup(popup)
+                    .addTo(map);
             }
         }
     });
@@ -45,23 +64,42 @@
 
 <div class="page-container mb-20">
     <div class="header">
-        <img style="view-transition-name: {activity.name.replaceAll(' ', '-')};" class="w-full" src={activity.cover} alt={activity.name} />
+        <img
+            style="view-transition-name: {activity.name.replaceAll(' ', '-')};"
+            class="w-full"
+            src={activity.cover}
+            alt={activity.name}
+        />
         <div class="relative pl-3 mt-[-6em]">
             <div class="flex space-x-2">
                 {#each activity.keywords as keyword}
                     <Badge class="rounded-none">{keyword}</Badge>
                 {/each}
             </div>
-            <div class="flex items-center bg-card-hover px-[0.25em] !mt-3 w-[calc(100%-20px)]">
+            <div
+                class="flex items-center bg-card-hover px-[0.25em] !mt-3 w-[calc(100%-20px)]"
+            >
                 {#if activity.logo}
-                    <img class="m-0 w-12 h-12 rounded-full" src={activity.logo} alt={activity.name} />
+                    <img
+                        class="m-0 w-12 h-12 rounded-full"
+                        src={activity.logo}
+                        alt={activity.name}
+                    />
                 {/if}
-                <h1 class="!m-0 !ml-2 py-[0.25em] !leading-[1.5em]">{activity.name}</h1>
+                <h1 class="!m-0 !ml-2 py-[0.25em] !leading-[1.5em]">
+                    {activity.name}
+                </h1>
             </div>
             <div class="meta flex not-prose">
-                <p class="mr-1">af <span class="font-bold">{activity.union}</span></p>
-                <p class="text-primary mr-1 before:mr-1 before:content-['·']">Miljø: {translateOption(activity.environment)}</p>
-                <p class="text-primary mr-1 before:mr-1 before:content-['·']">Køn: {translateOption(activity.gender)}</p>
+                <p class="mr-1">
+                    af <span class="font-bold">{activity.union}</span>
+                </p>
+                <p class="text-primary mr-1 before:mr-1 before:content-['·']">
+                    Miljø: {translateOption(activity.environment)}
+                </p>
+                <p class="text-primary mr-1 before:mr-1 before:content-['·']">
+                    Køn: {translateOption(activity.gender)}
+                </p>
             </div>
         </div>
     </div>
@@ -73,7 +111,9 @@
             <Card>
                 <CardHeader>
                     <CardTitle>Praktisk</CardTitle>
-                    <CardDescription>Information omkring aktiviteten</CardDescription>
+                    <CardDescription
+                        >Information omkring aktiviteten</CardDescription
+                    >
                 </CardHeader>
                 <CardContent>
                     <div class="space-y-8">

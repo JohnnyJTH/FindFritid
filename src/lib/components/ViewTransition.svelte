@@ -3,14 +3,14 @@
 
     onNavigate((navigation) => {
         // @ts-ignore
-        if (!document.startViewTransition) return
+        if (!document.startViewTransition) return;
 
         return new Promise((resolve) => {
             // @ts-ignore
             document.startViewTransition(async () => {
-                resolve()
-                await navigation.complete
-            })
-        })
-    })
+                resolve();
+                await navigation.complete;
+            });
+        });
+    });
 </script>

@@ -5,7 +5,11 @@
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label";
     import { authStore } from "$lib/stores";
-    import { ActivitiesSchema, type Activities, type Users } from "$lib/types/db";
+    import {
+        ActivitiesSchema,
+        type Activities,
+        type Users,
+    } from "$lib/types/db";
     import { onMount } from "svelte";
     import Tags from "../_components/Tags.svelte";
     import SelectEnum from "../_components/SelectEnum.svelte";
@@ -54,20 +58,42 @@
             authStore.set({ username, password });
             userData = await res.json();
             if (!userData?.user.permissions.includes("Admin")) {
-                addToast({ data: { title: "Fejl", description: "Du har ikke adgang til denne side", color: "bg-red-500" } });
+                addToast({
+                    data: {
+                        title: "Fejl",
+                        description: "Du har ikke adgang til denne side",
+                        color: "bg-red-500",
+                    },
+                });
                 goto("/admin");
             }
         } else {
-            addToast({ data: { title: "Fejl", description: "Forkert brugernavn eller kodeord", color: "bg-red-500" } });
+            addToast({
+                data: {
+                    title: "Fejl",
+                    description: "Forkert brugernavn eller kodeord",
+                    color: "bg-red-500",
+                },
+            });
             goto("/admin/opret");
         }
     };
 
     const createActivity = async () => {
-        const validation = ActivitiesSchema.omit({ id: true }).safeParse(activityData);
+        const validation = ActivitiesSchema.omit({ id: true }).safeParse(
+            activityData,
+        );
         if (!validation.success) {
             console.log(validation.error);
-            addToast({ data: { title: "Fejl", description: validation.error.issues.map((e) => e.message).join("\n"), color: "bg-red-500" } });
+            addToast({
+                data: {
+                    title: "Fejl",
+                    description: validation.error.issues
+                        .map((e) => e.message)
+                        .join("\n"),
+                    color: "bg-red-500",
+                },
+            });
             return;
         }
 
@@ -76,15 +102,31 @@
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ username, password, activity: activityData }),
+            body: JSON.stringify({
+                username,
+                password,
+                activity: activityData,
+            }),
         });
         if (res.ok) {
-            addToast({ data: { title: "Succes", description: "Aktiviteten blev oprettet", color: "bg-green-500" } });
+            addToast({
+                data: {
+                    title: "Succes",
+                    description: "Aktiviteten blev oprettet",
+                    color: "bg-green-500",
+                },
+            });
             const data = await res.json();
             goto(`/admin?id=${data.id}`);
         } else {
             console.log(res.statusText, res.status);
-            addToast({ data: { title: "Fejl", description: "Aktiviteten blev ikke oprettet", color: "bg-red-500" } });
+            addToast({
+                data: {
+                    title: "Fejl",
+                    description: "Aktiviteten blev ikke oprettet",
+                    color: "bg-red-500",
+                },
+            });
         }
     };
 
@@ -108,7 +150,13 @@
             if (type === "logo") activityData.logo = data.url;
             else activityData.cover = data.url;
         } else {
-            addToast({ data: { title: "Fejl", description: "Billedet blev ikke uploadet", color: "bg-red-500" } });
+            addToast({
+                data: {
+                    title: "Fejl",
+                    description: "Billedet blev ikke uploadet",
+                    color: "bg-red-500",
+                },
+            });
         }
         uploading = false;
     };
@@ -118,7 +166,9 @@
     {#if userData}
         <div class="flex items-center justify-between">
             <h1 class="mb-0">Opret aktivitet</h1>
-            <Button href="/admin" variant="outline" class="no-underline">Tilbage til aktiviteter</Button>
+            <Button href="/admin" variant="outline" class="no-underline"
+                >Tilbage til aktiviteter</Button
+            >
         </div>
         <p class="!mt-0">Her kan du oprette en aktivitet.</p>
         <div class="space-y-6">
@@ -135,8 +185,17 @@
                 </div>
                 <div class="space-y-2">
                     <Label for="cover">Billede</Label>
-                    <input bind:files={coverFiles} type="file" accept=".png, .jpg, .jpeg" id="cover" class="flex w-full px-3 py-1 text-sm transition-colors border rounded-md shadow-sm h-9 border-input bg-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
-                    <p class="text-sm text-muted-foreground">Billedet vil hovedsageligt blive vist i 3/2 aspect ratio.</p>
+                    <input
+                        bind:files={coverFiles}
+                        type="file"
+                        accept=".png, .jpg, .jpeg"
+                        id="cover"
+                        class="flex w-full px-3 py-1 text-sm transition-colors border rounded-md shadow-sm h-9 border-input bg-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+                    <p class="text-sm text-muted-foreground">
+                        Billedet vil hovedsageligt blive vist i 3/2 aspect
+                        ratio.
+                    </p>
 
                     <Button
                         on:click={() => {
@@ -147,8 +206,16 @@
                 </div>
                 <div class="space-y-2">
                     <Label for="logo">Logo</Label>
-                    <input bind:files={logoFiles} type="file" accept=".png, .jpg, .jpeg" id="logo" class="flex w-full px-3 py-1 text-sm transition-colors border rounded-md shadow-sm h-9 border-input bg-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" />
-                    <p class="text-sm text-muted-foreground">Logoet vil hovedsageligt blive vist i en lille cirkel.</p>
+                    <input
+                        bind:files={logoFiles}
+                        type="file"
+                        accept=".png, .jpg, .jpeg"
+                        id="logo"
+                        class="flex w-full px-3 py-1 text-sm transition-colors border rounded-md shadow-sm h-9 border-input bg-background file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+                    <p class="text-sm text-muted-foreground">
+                        Logoet vil hovedsageligt blive vist i en lille cirkel.
+                    </p>
 
                     <Button
                         on:click={() => {
@@ -159,7 +226,10 @@
                 </div>
                 <div class="space-y-2">
                     <Label for="description">Beskrivelse</Label>
-                    <Textarea bind:value={activityData.description} id="description" />
+                    <Textarea
+                        bind:value={activityData.description}
+                        id="description"
+                    />
                 </div>
                 <div class="space-y-2">
                     <Label for="union">Union</Label>
@@ -168,25 +238,45 @@
                 <div class="space-y-2">
                     <Label for="keywords">Nøgleord</Label>
                     <Tags bind:activity={activityData} id="keywords" />
-                    <p class="text-sm text-muted-foreground">Tryk enter efter hvert nøgleord.</p>
+                    <p class="text-sm text-muted-foreground">
+                        Tryk enter efter hvert nøgleord.
+                    </p>
                 </div>
                 <div class="space-y-2">
                     <Label for="sport">Sport</Label>
-                    <Switch bind:checked={activityData.sport} class="block" id="sport" />
+                    <Switch
+                        bind:checked={activityData.sport}
+                        class="block"
+                        id="sport"
+                    />
                 </div>
                 <div class="space-y-2">
                     <Label for="movement">Bevægelse</Label>
-                    <Switch bind:checked={activityData.movement} class="block" id="movement" />
+                    <Switch
+                        bind:checked={activityData.movement}
+                        class="block"
+                        id="movement"
+                    />
                 </div>
                 <div class="space-y-2">
                     <Label for="environment">Miljø</Label>
-                    <SelectEnum bind:activityProperty={activityData.environment} options={["Both", "Outdoor", "Indoor"]} />
-                    <p class="text-sm text-muted-foreground">Om aktiviteten hovedsageligt bliver afhold i et miljø.</p>
+                    <SelectEnum
+                        bind:activityProperty={activityData.environment}
+                        options={["Both", "Outdoor", "Indoor"]}
+                    />
+                    <p class="text-sm text-muted-foreground">
+                        Om aktiviteten hovedsageligt bliver afhold i et miljø.
+                    </p>
                 </div>
                 <div class="space-y-2">
                     <Label for="gender">Køn</Label>
-                    <SelectEnum bind:activityProperty={activityData.gender} options={["Neutral", "Male", "Female"]} />
-                    <p class="text-sm text-muted-foreground">Om aktiviteten er mere rettet mod et køn.</p>
+                    <SelectEnum
+                        bind:activityProperty={activityData.gender}
+                        options={["Neutral", "Male", "Female"]}
+                    />
+                    <p class="text-sm text-muted-foreground">
+                        Om aktiviteten er mere rettet mod et køn.
+                    </p>
                 </div>
                 <Button on:click={createActivity}>Opret</Button>
             {/if}
@@ -201,7 +291,9 @@
                 <Label for="password">Kodeord</Label>
                 <Input bind:value={password} id="password" type="password" />
             </div>
-            <Button on:click={login} disabled={!username || !password}>Log ind</Button>
+            <Button on:click={login} disabled={!username || !password}
+                >Log ind</Button
+            >
         </div>
     {/if}
 </div>

@@ -29,14 +29,28 @@
         data-[disabled]:bg-primary/40 data-[selected]:bg-primary/60 data-[disabled]:hover:cursor-default
           data-[disabled]:focus:!outline-none data-[disabled]:focus:!ring-0"
             >
-                <span class="flex items-center border-r border-white/10 px-1.5">{t.value}</span>
-                <button use:melt={$deleteTrigger(t)} class="flex h-full items-center px-1 enabled:hover:bg-primary/60">
+                <span class="flex items-center border-r border-white/10 px-1.5"
+                    >{t.value}</span
+                >
+                <button
+                    use:melt={$deleteTrigger(t)}
+                    class="flex h-full items-center px-1 enabled:hover:bg-primary/60"
+                >
                     <X class="square-3" />
                 </button>
             </div>
-            <div use:melt={$edit(t)} class="flex items-center overflow-hidden rounded-md px-1.5 [word-break:break-word] data-[invalid-edit]:focus:!ring-destructive" />
+            <div
+                use:melt={$edit(t)}
+                class="flex items-center overflow-hidden rounded-md px-1.5 [word-break:break-word] data-[invalid-edit]:focus:!ring-destructive"
+            />
         {/each}
 
-        <input use:melt={$input} {id} type="text" placeholder="Skriv nøgleord..." class="bg-background min-w-[4.5rem] shrink grow basis-0 border-0 text-foreground outline-none focus:!ring-0 data-[invalid]:text-destructive" />
+        <input
+            use:melt={$input}
+            {id}
+            type="text"
+            placeholder="Skriv nøgleord..."
+            class="bg-background min-w-[4.5rem] shrink grow basis-0 border-0 text-foreground outline-none focus:!ring-0 data-[invalid]:text-destructive"
+        />
     </div>
 </div>

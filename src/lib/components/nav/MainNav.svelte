@@ -13,7 +13,17 @@
     </a>
     <nav class="flex items-center space-x-6 text-sm font-medium">
         {#each mainNavItems as navItem}
-            <a class={cn("transition-colors hover:text-foreground/80", decodeURI($page.url.pathname) === navItem.href ? "text-foreground" : "text-foreground/60")} href={navItem.href} rel={navItem.external ? "noreferrer" : undefined} target={navItem.external ? "_blank" : undefined}>
+            <a
+                class={cn(
+                    "transition-colors hover:text-foreground/80",
+                    decodeURI($page.url.pathname) === navItem.href
+                        ? "text-foreground"
+                        : "text-foreground/60",
+                )}
+                href={navItem.href}
+                rel={navItem.external ? "noreferrer" : undefined}
+                target={navItem.external ? "_blank" : undefined}
+            >
                 {navItem.title}
             </a>
         {/each}

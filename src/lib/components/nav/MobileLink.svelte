@@ -12,7 +12,12 @@
 </script>
 
 <a
-    class={cn(decodeURI($page.url.pathname) === href ? "text-foreground" : "text-foreground/60", className)}
+    class={cn(
+        decodeURI($page.url.pathname) === href
+            ? "text-foreground"
+            : "text-foreground/60",
+        className,
+    )}
     {href}
     on:click={() => {
         open.set(false);

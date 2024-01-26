@@ -14,7 +14,8 @@
                 activityProperty = option;
             }}
             class="mr-2 cursor-pointer"
-            variant={option == activityProperty ? "default" : "secondary"}>{translateOption(option)}</Badge
+            variant={option == activityProperty ? "default" : "secondary"}
+            >{translateOption(option)}</Badge
         >
     {/each}
 </div>
